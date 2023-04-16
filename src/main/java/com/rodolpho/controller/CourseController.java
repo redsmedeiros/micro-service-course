@@ -7,14 +7,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rodolpho.model.Course;
+import com.rodolpho.repository.CourseRepository;
+
+import lombok.AllArgsConstructor;
 
 @RestController
 @RequestMapping("/api/course")
+@AllArgsConstructor
 public class CourseController {
+
+    private final CourseRepository courseRepository;
 
     @GetMapping
     public List<Course> list(){
-        return null;
+        return courseRepository.findAll();
     }
     
 }
