@@ -1,10 +1,12 @@
 package com.rodolpho.service.impl;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
 import com.rodolpho.entity.Post;
+import com.rodolpho.exception.ResourceNotFoundException;
 import com.rodolpho.payload.PostDto;
 import com.rodolpho.repository.PostRepository;
 import com.rodolpho.service.PostService;
@@ -35,8 +37,35 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<PostDto> getAllPosts() {
-       return null;
+       
+        List<Post> posts = postRepository.findAll();
+        
+        return posts.stream().map(post -> mapToDTO(post)).collect(Collectors.toList());
+
     }
+
+    @Override
+    public PostDto getPostById(long id) {
+       
+        Post post = postRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("post", "id", id));
+
+        return mapToDTO(post);
+    }
+
+    @Override
+    public PostDto updatePost(PostDto postDto, long id) {
+        
+        Post post = postRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("post", "id", id));
+
+        post.setTitle(postDto.getTitle());
+        post.setDescription(postDto.getDescription());
+        post.setContent(postDto.getContent());
+
+        Post updatedPost = postRepository.save(post);
+
+        return mapToDTO(updatedPost);
+    }
+    
 
     private PostDto mapToDTO(Post post){
 
@@ -58,5 +87,8 @@ public class PostServiceImpl implements PostService {
 
         return post;
     }
-    
+
+   
+
+   
 }
