@@ -3,6 +3,9 @@ package com.rodolpho.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.rodolpho.entity.Post;
@@ -36,11 +39,15 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostDto> getAllPosts() {
+    public List<PostDto> getAllPosts(int pageNo, int pageSize) {
+
+        PageRequest pageable = PageRequest.of(pageNo, pageSize);
        
-        List<Post> posts = postRepository.findAll();
+        Page<Post> posts = postRepository.findAll(pageable);
+
+        List<Post> listOfPosts = posts.getContent();
         
-        return posts.stream().map(post -> mapToDTO(post)).collect(Collectors.toList());
+        return listOfPosts.stream().map(post -> mapToDTO(post)).collect(Collectors.toList());
 
     }
 
