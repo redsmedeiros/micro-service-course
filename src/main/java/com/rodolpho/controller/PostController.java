@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rodolpho.payload.PostDto;
+import com.rodolpho.payload.PostResponse;
 import com.rodolpho.service.PostService;
 
 @RestController
@@ -35,7 +36,7 @@ public class PostController {
 
     //get all posts
     @GetMapping
-    public List<PostDto> getAllPosts(
+    public PostResponse getAllPosts(
         @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
         @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize
         ){

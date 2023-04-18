@@ -3,7 +3,6 @@ package com.rodolpho.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -11,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.rodolpho.entity.Post;
 import com.rodolpho.exception.ResourceNotFoundException;
 import com.rodolpho.payload.PostDto;
+import com.rodolpho.payload.PostResponse;
 import com.rodolpho.repository.PostRepository;
 import com.rodolpho.service.PostService;
 
@@ -39,7 +39,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostDto> getAllPosts(int pageNo, int pageSize) {
+    public PostResponse getAllPosts(int pageNo, int pageSize) {
 
         PageRequest pageable = PageRequest.of(pageNo, pageSize);
        
@@ -47,7 +47,18 @@ public class PostServiceImpl implements PostService {
 
         List<Post> listOfPosts = posts.getContent();
         
-        return listOfPosts.stream().map(post -> mapToDTO(post)).collect(Collectors.toList());
+        List<PostDto> content = listOfPosts.stream().map(post -> mapToDTO(post)).collect(Collectors.toList());
+
+        PostResponse postResponse = new PostResponse();
+        postResponse.setContent(content);
+        postResponse.setPageNo(posts.getNumber());
+        postResponse.setPageSize(posts.getSize());
+        postResponse.setTotalElements(posts.getTotalElements());
+        postResponse.setTotalPages(posts.getTotalPages());
+        postResponse.setLast(posts.isLast());
+
+        return postResponse;
+
 
     }
 

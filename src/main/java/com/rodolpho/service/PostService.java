@@ -1,14 +1,13 @@
 package com.rodolpho.service;
 
-import java.util.List;
-
 import com.rodolpho.payload.PostDto;
+import com.rodolpho.payload.PostResponse;
 
 public interface PostService {
     
     PostDto createPost(PostDto PostDto);
 
-    List<PostDto> getAllPosts(int pageNo, int pageSize);
+    PostResponse getAllPosts(int pageNo, int pageSize);
 
     PostDto getPostById(long id);
 
