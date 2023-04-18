@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.rodolpho.entity.Post;
@@ -39,9 +40,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostResponse getAllPosts(int pageNo, int pageSize) {
+    public PostResponse getAllPosts(int pageNo, int pageSize, String sortBy, String sortDir) {
 
-        PageRequest pageable = PageRequest.of(pageNo, pageSize);
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+
+        PageRequest pageable = PageRequest.of(pageNo, pageSize, sort);
        
         Page<Post> posts = postRepository.findAll(pageable);
 
@@ -58,8 +61,6 @@ public class PostServiceImpl implements PostService {
         postResponse.setLast(posts.isLast());
 
         return postResponse;
-
-
     }
 
     @Override
