@@ -1,5 +1,7 @@
 package com.rodolpho.payload;
 
+import java.util.Set;
+
 import lombok.Data;
 
 @Data
@@ -9,4 +11,5 @@ public class PostDto {
     private String description;
     private String title;
     private String content;
+    private Set<CommentDto> comments;
 }
