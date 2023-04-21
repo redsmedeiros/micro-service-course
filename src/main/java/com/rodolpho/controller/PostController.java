@@ -55,6 +55,7 @@ public class PostController {
     }
 
     //update post
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")   
     public ResponseEntity<PostDto> updatePost(@Valid @RequestBody PostDto postDto, @PathVariable(name = "id") long id){
 
@@ -64,6 +65,7 @@ public class PostController {
     }
 
     //delete
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deletePost(@PathVariable(name = "id") long id){
 
