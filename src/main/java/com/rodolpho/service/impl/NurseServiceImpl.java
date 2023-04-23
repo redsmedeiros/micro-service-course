@@ -22,6 +22,7 @@ public class NurseServiceImpl implements NurseService {
 
         Nurse nurse = new Nurse();
 
+        nurse.setId(nurseDto.getId());
         nurse.setName(nurseDto.getName());
         nurse.setEmail(nurseDto.getEmail());
         nurse.setDescription(nurseDto.getDescription());
@@ -32,8 +33,23 @@ public class NurseServiceImpl implements NurseService {
         nurse.setGraduation(nurseDto.getGraduation());
         nurse.setExperienceYears(nurseDto.getExperienceYears());
 
+        Nurse newNurse = nurseRepository.save(nurse);
+
+        NurseDto nurseResponse = new NurseDto();
+
+        nurseResponse.setId(newNurse.getId());
+        nurseResponse.setName(newNurse.getName());
+        nurseResponse.setEmail(newNurse.getEmail());
+        nurseResponse.setDescription(newNurse.getDescription());
+        nurseResponse.setPhone(newNurse.getPhone());
+        nurseResponse.setGender(newNurse.getGender());
+        nurseResponse.setCity(newNurse.getCity());
+        nurseResponse.setAge(newNurse.getAge());
+        nurseResponse.setGraduation(newNurse.getGraduation());
+        nurseResponse.setExperienceYears(newNurse.getExperienceYears());
+
         
-        return null;
+        return nurseResponse;
     }
     
 }

@@ -1,32 +1,39 @@
 package com.rodolpho.entity;
 
-import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "users")
 public class User {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+     
+    private String name;
 
-    @Column(nullable = false)
-    private String fullName;
+    @Column(nullable = false, unique = true)
+    private String username;
 
     @Column(nullable = false, unique = true)
     private String email;
@@ -34,21 +41,8 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    //@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    //private List<Order> orders;
-
-    //@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    //private List<WishList> wishList;
-
-    @Column(nullable = false)
-    private Boolean isAdmin = false;
-
-    @Column(nullable = false)
-    private Boolean hasShippingAddress = false;
-
-    @Column(nullable = false)
-    private LocalDateTime createdAt;
-
-    @Column(nullable = false)
-    private LocalDateTime updatedAt;
+    //many to many
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    private Set<Role> roles;
 }
