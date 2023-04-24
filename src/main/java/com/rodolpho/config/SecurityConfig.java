@@ -40,8 +40,12 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
 
         http.csrf().disable()
-            .authorizeHttpRequests((authorize) -> authorize.requestMatchers(HttpMethod.GET, "/api/**").permitAll().anyRequest().authenticated()
-            ).httpBasic(Customizer.withDefaults());
+            .authorizeHttpRequests((authorize) -> authorize.requestMatchers(HttpMethod.GET, "/api/**")
+            .permitAll()
+            .requestMatchers("/api/auth/**").permitAll()
+            .anyRequest()
+            .authenticated()
+            );
 
         return http.build();
     }
